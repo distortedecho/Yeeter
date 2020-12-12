@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const tweets = mongoose.model('tweets');
+const cron = require('node-cron');
 
 module.exports.Addtweet = async (req,res) =>{
     var user = res.locals.user;
@@ -81,4 +82,30 @@ module.exports.show = async(req,res) =>{
         .status(200)
         .json({doc});
     });
+};
+
+module.exports.update = async(req,res)=>{
+    var count, i=0;
+    var loggedin_user = res.locals.user;
+    await tweets.find({Username: loggedin_user},async (err,data)=>{
+        if(data)
+        {
+            count = data.length;
+        }
+    });
+    cron.schedule("* * * * * *", async()=>{
+        await tweets.find({Username: loggedin_user},(err,data)=>{
+            if(data)
+            {
+                console.log("working"+ i);
+                i++;
+                if(data.length>count)
+                {
+                    count = data.length; 
+                    // console.log(data);                   
+                    return JSON.stringify(data[count]);
+                }
+            }
+        });
+    })
 };

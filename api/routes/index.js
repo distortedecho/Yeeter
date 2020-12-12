@@ -28,4 +28,8 @@ Router
 .route('/showall')
 .get(user.authorize,tweets.show);
 
+Router
+.route('/update')
+.get(user.authorize,tweets.update);
+
 module.exports = Router;
