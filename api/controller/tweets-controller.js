@@ -71,7 +71,7 @@ module.exports.Comment = async(req,res)=>{
 };
 
 module.exports.show = async(req,res) =>{
-    await tweets.find().exec((err,doc)=>{
+    await tweets.find().exec((err,data)=>{
         if(err)
         {
             res
@@ -80,7 +80,7 @@ module.exports.show = async(req,res) =>{
         }
         res
         .status(200)
-        .json({doc});
+        .json({data});
     });
 };
 
