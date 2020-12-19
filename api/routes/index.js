@@ -32,4 +32,8 @@ Router
 .route('/update')
 .get(user.authorize,tweets.update);
 
+Router
+.route('/notification')
+.post(user.authorize,tweets.notification);
+
 module.exports = Router;

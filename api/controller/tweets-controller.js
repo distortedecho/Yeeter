@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const tweets = mongoose.model('tweets');
+const notifications = mongoose.model('Notifications');
 const cron = require('node-cron');
 
 module.exports.Addtweet = async (req,res) =>{
@@ -32,7 +33,7 @@ await tweets
         }
         else{
             user.like.LikeCounter +=1;
-            user.like.Username = username;
+            user.like.Username.push(username);
             await user.save((err)=>{
                 if(err) console.log(err);
                 else 
@@ -57,8 +58,8 @@ module.exports.Comment = async(req,res)=>{
             }
             else{
                 user.Comments.CommentCounter +=1;
-                user.Comments.Username = username;
-                user.Comments.Content = content;
+                user.Comments.Username.push(username);
+                user.Comments.Content.push(content);
                 await user.save((err)=>{
                     if(err) console.log(err);
                     else 
@@ -84,6 +85,58 @@ module.exports.show = async(req,res) =>{
     });
 };
 
+module.exports.notification = async(req,res) =>{
+    let Username = req.body.Username; //username of user whose tweet you liked
+    await notifications.findOne({Username: Username}).exec(async (err,user)=>{
+        if(err)
+        {
+           res
+           .status(400)
+           .json({"message":err});
+
+        }
+        else
+        {
+            if(user.length == 0)
+            {
+                await notifications
+                .create({
+                    Username: Username,
+                    details: req.body.details
+                },(err,data)=>{
+                    if(err)
+                    {
+                        res
+                        .status(400)
+                        .json({"message":"user not found and not able to create new"});
+                    }
+                    else
+                    {
+                        res
+                        .status(200)
+                        .json({"message":"new user created."});
+                    }
+                });
+            }
+            else
+            {
+                let newdetails = req.body.details;
+                user.details.push(newdetails);
+                await user.save((err)=>{
+                    if(err) console.log(err);
+                    else 
+                    {
+                        res
+                        .json({"message" : "user was found and new detail added."});
+                    }
+                });
+            }
+        }
+    });
+};
+
+
+
 module.exports.update = async(req,res)=>{
     var count, i=0;
     var loggedin_user = res.locals.user;
@@ -102,7 +155,6 @@ module.exports.update = async(req,res)=>{
                 if(data.length>count)
                 {
                     count = data.length; 
-                    // console.log(data);                   
                     return JSON.stringify(data[count]);
                 }
             }

@@ -24,3 +24,4 @@ const uri = "mongodb+srv://aditya_:dilERxIarDytmeIy@cluster0-jcswr.mongodb.net/t
 
 require('./user-info.js');
 require('./tweets');
+require('./notification');
