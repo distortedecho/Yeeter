@@ -87,6 +87,7 @@ module.exports.show = async(req,res) =>{
 
 module.exports.notification = async(req,res) =>{
     let Username = req.body.Username; //username of user whose tweet you liked
+    let premessage = res.locals.user;
     await notifications.findOne({Username: Username}).exec(async (err,user)=>{
         if(err)
         {
@@ -102,7 +103,7 @@ module.exports.notification = async(req,res) =>{
                 await notifications
                 .create({
                     Username: Username,
-                    details: req.body.details
+                    details: premessage +req.body.details
                 },(err,data)=>{
                     if(err)
                     {
@@ -120,7 +121,7 @@ module.exports.notification = async(req,res) =>{
             }
             else
             {
-                let newdetails = req.body.details;
+                let newdetails =premessage +req.body.details;
                 user.details.push(newdetails);
                 await user.save((err)=>{
                     if(err) console.log(err);
@@ -131,6 +132,73 @@ module.exports.notification = async(req,res) =>{
                     }
                 });
             }
+        }
+    });
+};
+
+module.exports.shownotif = async (req,res)=>
+{
+    let local_user = res.locals.user; 
+    await notifications.findOne({Username: local_user}).exec(async (err,user)=>{
+        if(err)
+        {
+            res
+            .status(400)
+            .json({"message":err});
+        }
+        else
+        {
+            if(user.length == 0)
+            {
+                await notifications
+                .create({
+                    Username: Username
+                },(err,user)=>{
+                    if(err)
+                    {
+                        res
+                        .status(400)
+                        .json({"message":"user was not found and not able to create new"});
+                    }
+                    else
+                    {
+                        res
+                        .status(200)
+                        .json({"message":"new user created."});
+                    }
+                });
+            }
+            else
+            {
+                res
+                .status(200)
+                .json({user});
+            }
+        }
+    })
+}
+
+module.exports.updateNoti = async (req,res)=>
+{
+    let current_no = parseInt(req.body.current_no);
+    await notifications.findOne({Username: res.locals.user}).exec(async (err,user)=>{
+        if(err)
+        {
+            res
+            .status(400)
+            .json({"message":"user was not found."});
+        }
+        else
+        {
+            user.Noti_count = current_no;
+            await user.save((err)=>{
+                if(err) console.log(err);
+                else 
+                {
+                    res
+                    .json({"message" : "noti count updated"});
+                }
+            });
         }
     });
 };
