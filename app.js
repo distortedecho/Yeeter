@@ -5,8 +5,11 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const routes = require('./api/routes');
 
-app.set('port_number', 8080);
-
+app.set('port_number',(process.env.PORT || 8080));
+app.use(function(req,res,next){
+	console.log(req.method,req.url);
+	next();
+});
 //setting server at port 8080
 var server = app.listen(app.get('port_number'), ()=>{
 var port = server.address().port;
