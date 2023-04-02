@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const tweets = mongoose.model('tweets');
 const notifications = mongoose.model('Notifications');
-const cron = require('node-cron');
 
 module.exports.Addtweet = async (req,res) =>{
     var user = res.locals.user;
@@ -98,8 +97,9 @@ module.exports.notification = async(req,res) =>{
         }
         else
         {
-            if(user.length == 0)
+            if(user == null)
             {
+                console.log("user is null");
                 await notifications
                 .create({
                     Username: Username,
@@ -121,6 +121,7 @@ module.exports.notification = async(req,res) =>{
             }
             else
             {
+                console.log("user found and notification pushed.");
                 let newdetails =premessage +req.body.details;
                 user.details.push(newdetails);
                 await user.save((err)=>{
@@ -136,7 +137,7 @@ module.exports.notification = async(req,res) =>{
     });
 };
 
-module.exports.shownotif = async (req,res)=>
+module.exports.shownotif = async (req,res) =>
 {
     let local_user = res.locals.user; 
     await notifications.findOne({Username: local_user}).exec(async (err,user)=>{
@@ -148,37 +149,38 @@ module.exports.shownotif = async (req,res)=>
         }
         else
         {
-            if(user.length == 0)
-            {
-                await notifications
-                .create({
-                    Username: Username
-                },(err,user)=>{
-                    if(err)
-                    {
-                        res
-                        .status(400)
-                        .json({"message":"user was not found and not able to create new"});
-                    }
-                    else
-                    {
-                        res
-                        .status(200)
-                        .json({"message":"new user created."});
-                    }
-                });
-            }
-            else
-            {
-                res
-                .status(200)
-                .json({user});
-            }
+            // if(user.length == undefined)
+            // {
+                // await notifications
+                // .create({
+                //     Username: local_user
+                // },(err,user)=>{
+                //     if(err)
+                //     {
+                //         console.log("404!!")
+                //         res
+                //         .status(400)
+                //         .json({"message":"user was not found and not able to create new"});
+                //     }
+                //     else
+                //     {
+                //         res
+                //         .status(200)
+                //         .json({"message":"new user created."});
+                //     }
+                // });
+            // }
+            // else
+            // {
+               res
+                 .status(200)
+                 .json({user});
+            // }
         }
     })
 }
 
-module.exports.updateNoti = async (req,res)=>
+module.exports.updateNoti = async (req,res) =>
 {
     let current_no = parseInt(req.body.current_no);
     await notifications.findOne({Username: res.locals.user}).exec(async (err,user)=>{
@@ -203,29 +205,7 @@ module.exports.updateNoti = async (req,res)=>
     });
 };
 
-
-
 module.exports.update = async(req,res)=>{
-    var count, i=0;
-    var loggedin_user = res.locals.user;
-    await tweets.find({Username: loggedin_user},async (err,data)=>{
-        if(data)
-        {
-            count = data.length;
-        }
-    });
-    cron.schedule("* * * * * *", async()=>{
-        await tweets.find({Username: loggedin_user},(err,data)=>{
-            if(data)
-            {
-                console.log("working"+ i);
-                i++;
-                if(data.length>count)
-                {
-                    count = data.length; 
-                    return JSON.stringify(data[count]);
-                }
-            }
-        });
-    })
+    const date = new Date();
+    console.log(date);
 };
