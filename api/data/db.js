@@ -1,4 +1,8 @@
 var mongoose = require('mongoose');
+require('./user-info.js');
+require('./tweets');
+require('./notification');
+require('./hashTags.js');
 const uri = "mongodb+srv://aditya_:dilERxIarDytmeIy@cluster0-jcswr.mongodb.net/test?retryWrites=true&w=majority";
 
 	//connecting mongoose to atlas
@@ -20,8 +24,3 @@ const uri = "mongodb+srv://aditya_:dilERxIarDytmeIy@cluster0-jcswr.mongodb.net/t
 	{
 	console.log('Mongoose error'+err);
 	});
-
-
-require('./user-info.js');
-require('./tweets');
-require('./notification');

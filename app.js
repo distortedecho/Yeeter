@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const routes = require('./api/routes');
 const cron = require("node-cron");
-const controller = require('./api/controller/tweets-controller');
+const collectData = require('./api/cron-job/cron-job');
 
 app.set('port_number',(process.env.PORT || 8080));
 app.use(function(req,res,next){
@@ -24,8 +24,8 @@ app.use((req,res,next)=>{
     next();
 });
 
-cron.schedule("*/3 * * * * *", function(){
-    controller.update();
+cron.schedule("*/6 * * * * *", function(){
+    collectData();
 });
 
 //let the server parse json data
