@@ -2,8 +2,8 @@ var mongoose = require('mongoose');
 var validator = require('mongoose-unique-validator');
 
 var cronModel = new mongoose.Schema({
-    count_done : {type: Number, default: 0},
-    hashTags : [String]
+    hashTag : {type: String, unique: true},
+    value   : {type:Number}
 });
 
 mongoose.model('cronModel', cronModel ,'cronModel');
