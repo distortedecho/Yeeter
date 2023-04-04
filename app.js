@@ -24,8 +24,10 @@ app.use((req,res,next)=>{
     next();
 });
 
-cron.schedule("*/6 * * * * *", function(){
-    collectData();
+cron.schedule("*/6 * * * * *", async function(){
+    collectData.getHashTags();
+    collectData.getData();
+    
 });
 
 //let the server parse json data
