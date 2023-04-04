@@ -40,6 +40,9 @@ module.exports.insertHashTags = async(req,res)=>{
     })
 }
 
-// module.exports.getTopTags = async(req,res)=>{
-
-// }
+module.exports.getTopTags = async(req,res)=>{
+    await hashTags.find({}, {}, { sort: { "value": -1 }, limit: 1 },(err,user)=>{
+        if(err) console.log(err);
+        if(user) console.log(user+" Highest rated tag!");
+    })
+}

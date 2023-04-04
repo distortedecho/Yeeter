@@ -12,12 +12,19 @@ function getHashTags(){
             console.log(arr.length+" length!");
             console.log(user);
             //offload to service to get maxheap
-            offload.Analyser(user);
+           await offload.Analyser(user);
         }
         else{
             console.log(err+"ee");
         }
-    })
+    });
 }
 
-module.exports = getHashTags;
+function getData(){
+    offload.topHashTag();
+}
+
+module.exports = {
+    getHashTags: getHashTags,
+    getData: getData
+};

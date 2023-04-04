@@ -23,3 +23,7 @@ module.exports.Analyser = async(req,res)=>{
         }
     }
 }
+
+module.exports.topHashTag = function(){
+    controller.getTopTags();
+}
