@@ -1,4 +1,4 @@
-# Heading 1 Yeeter server Docker image
+# Yeeter server Docker image
 This repository contains a Docker image for running a Node.js server. The image is stored in AWS Elastic Container Registry (ECR).
 
 # Heading 2 Usage
