@@ -32,8 +32,6 @@ Build a new Docker image using the updated code.
 
 Push the new Docker image to ECR.
 
-`docker push public.ecr.aws/d1s2y5r0/twitter:1.0`
-
 Update the Docker image URL in this README file.
 
 Commit and push your changes to this GitHub repository.
