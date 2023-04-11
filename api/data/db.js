@@ -1,9 +1,11 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 require('./user-info.js');
 require('./tweets');
 require('./notification');
 require('./hashTags.js');
-const uri = "mongodb+srv://aditya_:dilERxIarDytmeIy@cluster0-jcswr.mongodb.net/test?retryWrites=true&w=majority";
+const mongo_url = require('../../config/keys.js');
+
+const uri = mongo_url;
 
 	//connecting mongoose to atlas
 	//unhandled promises are being depricated
