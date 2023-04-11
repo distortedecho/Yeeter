@@ -24,7 +24,9 @@ app.use((req,res,next)=>{
     next();
 });
 
-cron.schedule("*/6 * * * * *", async function(){
+
+//Analyze and get top tweets every 6 hours
+cron.schedule("0 */6 * * * *", async function(){
     collectData.getHashTags();
     collectData.getData();
     

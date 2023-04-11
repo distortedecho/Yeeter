@@ -1,5 +1,7 @@
 const controller = require('../controller/hashTag-controller');
 
+
+//Analyse the tweets and find out hashTags
 module.exports.Analyser = async(req,res)=>{
     let data;
     data = req;
@@ -24,6 +26,7 @@ module.exports.Analyser = async(req,res)=>{
     }
 }
 
+//get Top hashtags
 module.exports.topHashTag = function(){
     controller.getTopTags();
 }

@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt-nodejs');
 const jwt = require('jsonwebtoken');
 
 module.exports.user = async(req,res)=>{
-    const Password = req.body.Password;
+  const Password = req.body.Password;
 	await	signup
 		.create({
 			FirstName : req.body.FirstName,
